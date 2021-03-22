@@ -115,6 +115,7 @@ export default function Search() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 10,
         alignItems: 'center',
         backgroundColor: '#e8f0ff',
         paddingTop: '10%',

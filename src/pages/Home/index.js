@@ -102,6 +102,7 @@ export default function Home() {
             <Conditions weather={weather} />
 
             <FlatList
+                showsHorizontalScrollIndicator={false}
                 horizontal={true}
                 contentContainerStyle={{ paddingBottom: '5%' }}
                 style={styles.list}
@@ -117,6 +118,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#e8f0ff',
