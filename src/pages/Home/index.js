@@ -14,8 +14,6 @@ import api, { key } from '../../services/api';
 
 export default function Home() {
 
-    console.log('iniciou');
-
     const [errorMsg, setErrorMsg] = useState(null);
     const [loading, setLoading] = useState(true);
     const [weather, setWeather] = useState([]);
@@ -46,48 +44,60 @@ export default function Home() {
 
             console.log('location', location.coords);
 
-            //const response = await api.get(`/weather?key=${key}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`);
-            const response = await api.get(`/weather?key=${key}&lat=-29.567&lon=-51.9205`);
-              
-            //console.log('response', response);
-            setWeather(response.data);
+            //const response = await api.get(`/weather?key=${key}&lat=-29.567&lon=-51.9205`);
+            const response = await api.get(`/weather?key=${key}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`)
+                .then((response) => {
+                    console.log('sucesso', response);
 
-            if (response.data.results.currently === 'noite') {
-                setBackground(['#0c3741', '#0f2f61']);
-            }
+                    console.log('response', response);
+                    setWeather(response.data);
 
-            /*switch (response.data.results.condition_slug) {
-                case 'clear_day':
-                    setIcon({ name: 'partly-sunny', color: '#FFB300' });
-                    break;
-                case 'rain':
-                    setIcon({ name: 'rainy', color: '#FFF' });
-                    break;
-                case 'storm':
-                    setIcon({ name: 'rainy', color: '#FFF' });
-                    break;
-            }*/
+                    if (response.data.results.currently === 'noite') {
+                        setBackground(['#0c3741', '#0f2f61']);
+                    }
 
-            setLoading(false);
-            setIcon(condition(response.data.results.condition_slug));
-            console.log(response.data.results.condition_slug);
+                    /*switch (response.data.results.condition_slug) {
+                        case 'clear_day':
+                            setIcon({ name: 'partly-sunny', color: '#FFB300' });
+                            break;
+                        case 'rain':
+                            setIcon({ name: 'rainy', color: '#FFF' });
+                            break;
+                        case 'storm':
+                            setIcon({ name: 'rainy', color: '#FFF' });
+                            break;
+                    }*/
+
+                    setLoading(false);
+                    setIcon(condition(response.data.results.condition_slug));
+                    console.log(response.data.results.condition_slug);
+
+                }).catch((error) => {
+                    setErrorMsg(error.response);
+                    console.log('erro', error.response.data.message);
+                    console.log('error', errorMsg);
+                });
+
+
 
         })();
     }, [])
 
-    useEffect(() => {
-
-        if (errorMsg != null) {
-
-        }
-
-    }, [errorMsg])
-
-    if (loading) {
+    if (loading && errorMsg == null) {
         return (
             <LottieView
+                resizeMode="center"
                 source={require('../../assets/animations/wind.json')}
                 loop
+                autoPlay
+            />
+        )
+    } else if (loading && errorMsg != null) {
+        return (
+            <LottieView
+                resizeMode="center"
+                source={require('../../assets/animations/error.json')}
+                loop={false}
                 autoPlay
             />
         )
