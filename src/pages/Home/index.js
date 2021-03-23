@@ -47,9 +47,7 @@ export default function Home() {
             //const response = await api.get(`/weather?key=${key}&lat=-29.567&lon=-51.9205`);
             const response = await api.get(`/weather?key=${key}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`)
                 .then((response) => {
-                    console.log('sucesso', response);
-
-                    console.log('response', response);
+                    //console.log('sucesso', response);
                     setWeather(response.data);
 
                     if (response.data.results.currently === 'noite') {
@@ -85,17 +83,22 @@ export default function Home() {
 
     if (loading && errorMsg == null) {
         return (
-            <LottieView
-                resizeMode="center"
-                source={require('../../assets/animations/wind.json')}
-                loop
-                autoPlay
-            />
+            <View style={styles.header}>
+                <LottieView
+                    resizeMode="contain"
+                    source={require('../../assets/animations/wind.json')}
+                    loop
+                    autoPlay
+                    height={'60%'}
+                />
+                <Text style={{color: '#0c3741', fontSize: 20, fontWeight: 'bold', paddingTop: 20, margin: 30}}>Buscando dados da sua cidade</Text>
+            </View>
+
         )
     } else if (loading && errorMsg != null) {
         return (
             <LottieView
-                resizeMode="center"
+                resizeMode="contain"
                 source={require('../../assets/animations/error.json')}
                 loop={false}
                 autoPlay
@@ -126,6 +129,15 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+    header:{
+        flex: 1,
+        width: '95%',
+        height: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 8,
+        paddingTop: 0
+    },
     container: {
         flex: 1,
         marginTop: 10,
