@@ -10,7 +10,7 @@ export function condition(condition) {
         case 'snow':
             return icon = {
                 name: 'snow-outline',
-                color: '#FFB300',
+                color: '#607D8B',
                 json: require('../assets/animations/cloud.json')
             };
             break;
@@ -18,7 +18,7 @@ export function condition(condition) {
             return icon = {
                 name: 'rainy-outline',
                 color: '#607D8B',
-                json: require('../assets/animations/cloud.json')
+                json: '../assets/animations/cloud.json'
             };
             break;
         case 'rain':
@@ -38,7 +38,7 @@ export function condition(condition) {
         case 'clear_day':
             return icon = {
                 name: 'sunny-outline',
-                color: '#FFB300',
+                color: '#607D8B',
                 json: require('../assets/animations/clear_day.json')
             };
             break;
@@ -59,35 +59,35 @@ export function condition(condition) {
         case 'cloudly_day':
             return icon = {
                 name: 'partly-sunny-outline',
-                color: '#FFB300',
+                color: '#607D8B',
                 json: require('../assets/animations/cloudly_day.json')
             };
             break;
         case 'cloudly_night':
             return icon = {
                 name: 'cloud-outline',
-                color: '#FFF',
+                color: '#607D8B',
                 json: require('../assets/animations/cloudly_night.json')
             };
             break;
         case 'none_day':
             return icon = {
                 name: 'rainy-outline',
-                color: '#FFF',
+                color: '#607D8B',
                 json: require('../assets/animations/cloud.json')
             };
             break;
         case 'none_night':
             return icon = {
                 name: 'rainy-outline',
-                color: '#FFF',
+                color: '#607D8B',
                 json: require('../assets/animations/clear_day.json')
             };
             break;
         default:
             return icon = {
                 name: 'sunny-outline',
-                color: '#FFB300',
+                color: '#607D8B',
                 json: require('../assets/animations/clear_day.json')
             };
     }

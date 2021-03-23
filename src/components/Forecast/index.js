@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-//import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 
 import { condition } from '../../utils/condition';
 
@@ -10,12 +10,13 @@ export default function Forecast({ data }) {
 
     //console.log('icon', data.description);
 
-    /*function handleClick() {
+    function handleClick() {
         Toast.show({
+            type: 'info',
             text1: `${data.weekday}`,
             text2: `${data.description} 👋`
         });
-    }*/
+    }
 
     return (
         <TouchableOpacity onPress={() => handleClick()} style={styles.container}>

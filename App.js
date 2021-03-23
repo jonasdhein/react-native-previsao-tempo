@@ -4,7 +4,7 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './src/routes';
 import { default as theme } from './theme.json'
-//import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 
 
 function App(props) {
@@ -14,6 +14,7 @@ function App(props) {
       <StatusBar hidden={true} />
       <Routes />
     </NavigationContainer>
+    <Toast ref={(ref) => Toast.setRef(ref)} />
     </>
   );
 }

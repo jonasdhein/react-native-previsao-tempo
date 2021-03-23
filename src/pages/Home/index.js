@@ -68,7 +68,7 @@ export default function Home() {
 
                     setLoading(false);
                     setIcon(condition(response.data.results.condition_slug));
-                    console.log(response.data.results.condition_slug);
+                    //console.log(response.data.results);
 
                 }).catch((error) => {
                     setErrorMsg(error.response);
@@ -85,13 +85,12 @@ export default function Home() {
         return (
             <View style={styles.header}>
                 <LottieView
-                    resizeMode="contain"
+                    resizeMode="center"
                     source={require('../../assets/animations/wind.json')}
                     loop
                     autoPlay
-                    height={'60%'}
                 />
-                <Text style={{color: '#0c3741', fontSize: 20, fontWeight: 'bold', paddingTop: 20, margin: 30}}>Buscando dados da sua cidade</Text>
+                <Text style={{flex: 1, color: '#0c3741', fontSize: 20, fontWeight: 'bold', paddingTop: 20, margin: 30}}>Buscando dados da sua cidade</Text>
             </View>
 
         )
@@ -102,6 +101,7 @@ export default function Home() {
                 source={require('../../assets/animations/error.json')}
                 loop={false}
                 autoPlay
+                height={'100%'}
             />
         )
     }
@@ -148,6 +148,5 @@ const styles = StyleSheet.create({
     },
     list: {
         marginTop: 10,
-        marginLeft: 10
     }
 })

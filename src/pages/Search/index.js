@@ -35,7 +35,8 @@ export default function Search() {
     if (city) {
         return (
             <SafeAreaView style={styles.container}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity style={styles.backButton}
+                    onPress={() => navigation.navigate('Home', { withAnimation: true })}>
                     <Feather
                         name="chevron-left"
                         size={32}
@@ -43,7 +44,6 @@ export default function Search() {
                     />
                     <Text style={{ fontSize: 22 }}>Voltar</Text>
                 </TouchableOpacity>
-
                 <View style={styles.searchBox}>
                     <TextInput
                         value={input}
@@ -52,15 +52,14 @@ export default function Search() {
                         autoFocus={true}
                         style={styles.input}
                     />
-                    <TouchableOpacity style={styles.icon} onPress={handleSearch}>
-                        <Feather
-                            name="search"
-                            size={22}
-                            color="#FFF"
-                        />
-                    </TouchableOpacity>
                 </View>
-
+                <TouchableOpacity style={styles.icon} onPress={handleSearch}>
+                    <Feather
+                        name="search"
+                        size={22}
+                        color="#FFF"
+                    />
+                </TouchableOpacity>
                 <LinearGradient
                     style={styles.header}
                     colors={['#1ed6ff', '#97c1ff']}
@@ -71,7 +70,7 @@ export default function Search() {
                         <Text style={styles.temp}>{city.results.temp}°</Text>
                     </View>
 
-                    <Conditions weather={city}/>
+                    <Conditions weather={city} />
 
                 </LinearGradient>
 
@@ -87,9 +86,8 @@ export default function Search() {
                     size={32}
                     color="#000"
                 />
-                <Text style={{ fontSize: 22 }}>Voltar</Text>
+                <Text style={{ fontSize: 20 }}>Voltar</Text>
             </TouchableOpacity>
-
             <View style={styles.searchBox}>
                 <TextInput
                     value={input}
@@ -118,7 +116,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         alignItems: 'center',
         backgroundColor: '#e8f0ff',
-        paddingTop: '10%',
     },
     backButton: {
         flexDirection: 'row',
@@ -152,7 +149,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 8,
         borderBottomRightRadius: 8
     },
-    header:{
+    header: {
         marginTop: '5%',
         width: '95%',
         alignItems: 'center',
@@ -161,17 +158,17 @@ const styles = StyleSheet.create({
         paddingTop: '3%',
         paddingBottom: '3%'
     },
-    date:{
+    date: {
         color: '#FFF',
         fontSize: 17
     },
-    city:{
+    city: {
         color: '#FFF',
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20
     },
-    temp:{
+    temp: {
         color: '#FFF',
         fontSize: 80,
         fontWeight: 'bold',
