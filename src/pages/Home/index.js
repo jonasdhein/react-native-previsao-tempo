@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, FlatList } from 'react-native';
+import { ActivityIndicator, SafeAreaView, View, Text, StyleSheet, FlatList } from 'react-native';
 import LottieView from "lottie-react-native";
 import * as Location from 'expo-location';
 import { condition } from '../../utils/condition';
@@ -83,14 +83,16 @@ export default function Home() {
 
     if (loading && errorMsg == null) {
         return (
-            <View style={styles.header}>
-                <LottieView
+            <View style={[styles.header, styles.horizontal]}>
+                {/*<LottieView
                     resizeMode="center"
                     source={require('../../assets/animations/wind.json')}
                     loop
                     autoPlay
                 />
                 <Text style={{flex: 1, color: '#0c3741', fontSize: 20, fontWeight: 'bold', paddingTop: 20, margin: 30}}>Buscando dados da sua cidade</Text>
+                */}
+                <ActivityIndicator size="large" color="#0c3741" />
             </View>
 
         )
@@ -129,7 +131,16 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-    header:{
+    header: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
+    },
+    header: {
         flex: 1,
         width: '95%',
         height: '95%',

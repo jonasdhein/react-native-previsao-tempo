@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "previsao-tempo",
+    "name": "Previsão do Tempo",
     "slug": "previsao-tempo",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,16 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "br.com.forcontrol.previsaotempo"
     },
     "android": {
+      "package": "br.com.forcontrol.previsaotempo",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#80CBC4"
       }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "description": ""
   }

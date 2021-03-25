@@ -32,11 +32,13 @@ export default function Search() {
 
     }
 
+    //navigation.navigate('Home', { withAnimation: true })
+
     if (city) {
         return (
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity style={styles.backButton}
-                    onPress={() => navigation.navigate('Home', { withAnimation: true })}>
+                    onPress={() => navigation.goBack()}>
                     <Feather
                         name="chevron-left"
                         size={32}
@@ -52,28 +54,24 @@ export default function Search() {
                         autoFocus={true}
                         style={styles.input}
                     />
+                    <TouchableOpacity style={styles.icon} onPress={handleSearch}>
+                        <Feather
+                            name="search"
+                            size={22}
+                            color="#FFF"
+                        />
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.icon} onPress={handleSearch}>
-                    <Feather
-                        name="search"
-                        size={22}
-                        color="#FFF"
-                    />
-                </TouchableOpacity>
                 <LinearGradient
                     style={styles.header}
-                    colors={['#1ed6ff', '#97c1ff']}
-                >
+                    colors={['#1ed6ff', '#97c1ff']}>
                     <Text style={styles.date}>{city.results.date}</Text>
                     <Text style={styles.city}>{city.results.city_name}</Text>
                     <View>
                         <Text style={styles.temp}>{city.results.temp}°</Text>
                     </View>
-
                     <Conditions weather={city} />
-
                 </LinearGradient>
-
             </SafeAreaView>
         )
     }
