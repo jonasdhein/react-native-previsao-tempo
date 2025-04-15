@@ -15,116 +15,136 @@ import api, { key } from '../../services/api';
 export default function Home() {
 
     const [errorMsg, setErrorMsg] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [weather, setWeather] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [weather, setWeather] = useState({});
     const [icon, setIcon] = useState({});
     const [background, setBackground] = useState(['#1ed6ff', '#97c1ff']);
 
-    /*React.useEffect(() => {
-        Toast.show({
-            text1: 'Olá',
-            text2: 'Bem-vindo(a) 👋'
-        });
-    }, []);*/
+    // React.useEffect(() => {
+    //     Toast.show({
+    //         text1: 'Olá',
+    //         text2: 'Bem-vindo(a) 👋'
+    //     });
+    // }, []);
+
+    useEffect(() => {
+        console.log('loading', loading);
+    }, [loading]);
 
     //funcao anonima
     useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestPermissionsAsync();
+
+        async function loadWeather() {
+
+            setLoading(true);
+            setErrorMsg(null);
+
+            const { status } = await Location.requestForegroundPermissionsAsync();
 
             if (status !== 'granted') {
-                setErrorMsg('Permissão negada para acesso da localização');
+                setErrorMsg('Permissão para acessar localização negada!');
                 setLoading(false);
                 return;
             }
 
-            console.log('permissao', status);
+            const location = await Location.getCurrentPositionAsync({});
+            const { latitude, longitude } = location.coords;
 
-            let location = await Location.getCurrentPositionAsync({});
+            const endpoint = `weather?key=${key}&lat=${latitude}&lon=${longitude}&locale=pt-br`;
+            const response = await api.get(endpoint);
+            setWeather(response.data);
 
-            console.log('location', location.coords);
+            const conditionName = response.data.results.condition_slug;
+            console.log("🚀 ~ loadWeather ~ conditionName:", conditionName)
+            setLoading(false);
 
-            //const response = await api.get(`/weather?key=${key}&lat=-29.567&lon=-51.9205`);
-            const response = await api.get(`/weather?key=${key}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`)
-                .then((response) => {
-                    //console.log('sucesso', response);
-                    setWeather(response.data);
+            try {
+                const weatherIcon = condition(conditionName);
+                console.log("🚀 ~ weatherIcon:", weatherIcon)
+                if (weatherIcon) {
+                    setIcon(weatherIcon);
+                }
+            } catch (err) {
+                console.log("🚀 ~ loadWeather ~ err:", err)
+            }
 
-                    if (response.data.results.currently === 'noite') {
-                        setBackground(['#0c3741', '#0f2f61']);
-                    }
+            setBackground(condition[conditionName].background);
 
-                    /*switch (response.data.results.condition_slug) {
-                        case 'clear_day':
-                            setIcon({ name: 'partly-sunny', color: '#FFB300' });
-                            break;
-                        case 'rain':
-                            setIcon({ name: 'rainy', color: '#FFF' });
-                            break;
-                        case 'storm':
-                            setIcon({ name: 'rainy', color: '#FFF' });
-                            break;
-                    }*/
+        }
 
-                    setLoading(false);
-                    setIcon(condition(response.data.results.condition_slug));
-                    //console.log(response.data.results);
+        loadWeather();
 
-                }).catch((error) => {
-                    setErrorMsg(error.response);
-                    console.log('erro', error.response.data.message);
-                    console.log('error', errorMsg);
-                });
-
-
-
-        })();
     }, [])
 
-    if (loading && errorMsg == null) {
-        return (
-            <View style={[styles.header, styles.horizontal]}>
-                {/*<LottieView
-                    resizeMode="center"
-                    source={require('../../assets/animations/wind.json')}
-                    loop
-                    autoPlay
-                />
-                <Text style={{flex: 1, color: '#0c3741', fontSize: 20, fontWeight: 'bold', paddingTop: 20, margin: 30}}>Buscando dados da sua cidade</Text>
-                */}
-                <ActivityIndicator size="large" color="#0c3741" />
-            </View>
+    // if (loading && errorMsg == null) {
+    //     return (
+    //         <View style={[styles.header, styles.vertical]}>
+    //             <LottieView
+    //                 style={{ width: 90, height: 90 }}
+    //                 resizeMode="center"
+    //                 source={require('../../assets/animations/wind.json')}
+    //                 loop
+    //                 autoPlay
+    //             />
+    //             <Text style={{color: '#0c3741', fontSize: 20, fontWeight: 'bold'}}>Buscando dados da sua cidade</Text>
+    //         </View>
 
-        )
-    } else if (loading && errorMsg != null) {
-        return (
-            <LottieView
-                resizeMode="contain"
-                source={require('../../assets/animations/error.json')}
-                loop={false}
-                autoPlay
-                height={'100%'}
-            />
-        )
-    }
+    //     )
+    // } else if (loading && errorMsg != null) {
+    //     return (
+    //         <LottieView
+    //             resizeMode="contain"
+    //             source={require('../../assets/animations/error.json')}
+    //             loop={false}
+    //             autoPlay
+    //             height={'100%'}
+    //         />
+    //     )
+    // }
 
     return (
         <SafeAreaView style={styles.container}>
             <Menu />
 
-            <Header background={background} weather={weather} icon={icon} />
+            {loading ?
+                errorMsg == null ?
+                    <View style={[styles.header, styles.vertical]}>
+                        <LottieView
+                            style={{ width: 90, height: 90 }}
+                            resizeMode="center"
+                            source={require('../../assets/animations/wind.json')}
+                            loop
+                            autoPlay
+                        />
+                        <Text style={styles.text}>Buscando dados através da sua localização</Text>
+                    </View>
+                    :
+                    <LottieView
+                        resizeMode="contain"
+                        source={require('../../assets/animations/error.json')}
+                        loop={false}
+                        autoPlay
+                        height={'100%'}
+                    />
+                :
 
-            <Conditions weather={weather} />
+                weather &&
+                <>
+                    <Header background={background} weather={weather} icon={icon} />
 
-            <FlatList
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                contentContainerStyle={{ paddingBottom: '5%' }}
-                style={styles.list}
-                data={weather.results.forecast}
-                keyExtractor={item => item.date}
-                renderItem={({ item }) => <Forecast data={item} />}
-            />
+                    <Conditions weather={weather} />
+
+                    <FlatList
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        contentContainerStyle={{ paddingBottom: '5%' }}
+                        style={styles.list}
+                        data={weather.results?.forecast}
+                        keyExtractor={item => item.date}
+                        renderItem={({ item }) => <Forecast data={item} />}
+                    />
+                </>
+            }
 
         </SafeAreaView>
     )
@@ -135,10 +155,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center"
     },
-    horizontal: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 10
+    vertical: {
+        flexDirection: "column",
+        justifyContent: "center",
     },
     header: {
         flex: 1,
@@ -159,5 +178,11 @@ const styles = StyleSheet.create({
     },
     list: {
         marginTop: 10,
+    },
+    text: {
+        color: '#0c3741',
+        fontSize: 16,
+        fontWeight: 'regular',
+        textAlign: 'center',
     }
 })

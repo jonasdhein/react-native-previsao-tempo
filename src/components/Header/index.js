@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function Header({ background, weather, icon }) {
 
-
     function handleClick() {
         Toast.show({
             type: 'info',
@@ -24,7 +23,7 @@ export default function Header({ background, weather, icon }) {
             <Text style={styles.date}>{(weather.results ? weather.results.date : '')}</Text>
             <Text style={styles.city}>{(weather.results ? weather.results.city_name : '')}</Text>
             <LottieView
-                style={{ position: 'absolute', right: 5, top: 5, zIndex: 9, height: 32 }}
+                style={{ height: 80, width: 80, position: 'absolute', right: 5, top: 5, zIndex: 9 }}
                 source={require('../../assets/animations/cloud.json')}
                 loop
                 autoPlay
@@ -42,11 +41,10 @@ export default function Header({ background, weather, icon }) {
 const styles = StyleSheet.create({
     header: {
         width: '95%',
-        height: '55%',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 8,
-        paddingTop: 0
+        paddingTop: 8
     },
     date: {
         color: '#FFF',
